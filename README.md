@@ -20,7 +20,7 @@ The project was developed by three programmers: [Bogdan Keplast](https://github.
 
 
 Programming Language: Python
-Frameworks: Flask and FastAPI
-Database Library: SQLAlchemy
+Frameworks: FastAPI
+Database Library: SQLAlchemy, FastAPI Users, 
 Data Processing Library: Pandas
 Database Management System: MySQL
