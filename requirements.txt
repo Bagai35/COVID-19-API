@@ -4,3 +4,7 @@ fastapi-users[sqlalchemy]
 psycopg2
 python-dotenv
 sqlalchemy
+
+Для запуска надо ввести:
+uvicorn main:app --reload
+
