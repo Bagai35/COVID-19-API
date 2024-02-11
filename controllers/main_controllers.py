@@ -38,3 +38,19 @@ class CovidStatistics:
                     "people_vaccinated": covidStatistic.people_vaccinated
                     # Добавьте другие поля, если они есть
                 }
+
+    async def delete_statistics(self, db: AsyncSession, CovidStatisticId: int):
+        async with db as session:
+            # Попытка найти запись по id
+            covid_statistic = await session.execute(select(CovidStatistic).filter(CovidStatistic.id == CovidStatisticId))
+            covid_statistic = covid_statistic.scalars().first()
+
+            # Если запись не найдена, вызываем исключение HTTP 404 Not Found
+            if not covid_statistic:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Covid Statistic not found")
+
+            # Удаляем запись
+            await session.delete(covid_statistic)
+            await session.commit()
+
+            return {"message": "Covid Statistic deleted successfully"}

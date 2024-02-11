@@ -38,10 +38,22 @@ def read_statistics(skip: int = 0, limit: int = 100, db: Session = Depends(get_s
     covid = covid_controller.get_statistics(db, skip=skip, limit=limit)
     return covid
 
-@router.put("/covid_Statistic/{CovidStatisticId}", response_model=Covid_Statistics_update)
-async def update_author_route(CovidStatisticId: int, request: Covid_Statistics_update, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user_role)):
+@router.put("/covid/statistic/{CovidStatisticId}", response_model=dict)
+async def Update_Statistics(CovidStatisticId: int, request: Covid_Statistics_update, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user_role)):
     CovidStatistic = await covid_controller.update_statistics(db, CovidStatisticId, request)
     return CovidStatistic
+
+@router.delete("/covid/statistics/delete/{CovidStatisticId}", response_model=dict)
+async def delete_statistics(
+    CovidStatisticId: int,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user_role)
+):
+    try:
+        result = await covid_controller.delete_statistics(db, CovidStatisticId)
+        return result
+    except HTTPException as e:
+        return e
 #
 #
 
