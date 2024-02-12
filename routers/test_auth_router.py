@@ -31,11 +31,11 @@ router.include_router(
 
 current_user = fastapi_users.current_user()
 
-@router.get("/users/me")
+@router.get("/users/me", tags=["user"])
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.username}"
 
-@router.get("/users/all")
+@router.get("/users/all", tags=["user"])
 async def protected_route(user: User = Depends(current_user), db: AsyncSession = Depends(get_db)):
     # Создайте объект запроса
     stmt = select(User)
@@ -54,8 +54,4 @@ async def protected_route(user: User = Depends(current_user), db: AsyncSession =
     }
 
     return response_data
-
-@router.get("/anonyms")
-def unprotected_route():
-    return f"Hello, anonym"
 

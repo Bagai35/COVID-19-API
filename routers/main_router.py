@@ -42,12 +42,12 @@ def read_statistics(skip: int = 0, limit: int = 100, db: Session = Depends(get_s
     covid = covid_controller.get_statistics(db, skip=skip, limit=limit)
     return covid
 
-@router.put("/covid/statistic/{CovidStatisticId}", response_model=dict, tags=["covid"])
+@router.put("/covid/statistic/{CovidStatisticId}", response_model=dict, tags=["admin"])
 async def Update_Statistics(CovidStatisticId: int, request: Covid_Statistics_update, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user_role)):
     CovidStatistic = await covid_controller.update_statistics(db, CovidStatisticId, request)
     return CovidStatistic
 
-@router.delete("/covid/statistics/delete/{CovidStatisticId}", response_model=dict, tags=["covid"])
+@router.delete("/covid/statistics/delete/{CovidStatisticId}", response_model=dict, tags=["admin"])
 async def delete_statistics(
     CovidStatisticId: int,
     db: AsyncSession = Depends(get_db),
@@ -61,7 +61,7 @@ async def delete_statistics(
 
 
 
-@router.put("/user/update", response_model=None, tags=["user"])
+@router.put("/user/update", response_model=None, tags=["admin"])
 def update_user_data(
         verify_account_name: str,
     updated_data: UpdateUserData,
@@ -84,7 +84,7 @@ def update_user_data(
     return current_user
 
 
-@router.get("/stats/summry/location/{location_id}", response_model=dict, tags=["stat"])
+@router.get("/stats/summry/location/{location_id}", response_model=dict, tags=["statistic"])
 def read_country_summary_stats(location_id: int, db: Session = Depends(get_sync_db)):
     location = location_controller.get_location_by_id(db, location_id)
 
@@ -133,7 +133,7 @@ def get_locations_by_continent(continent_name: str, db: Session = Depends(get_sy
     return {"continent": continent_id, "locations": locations}
 
 
-@router.post("/location/create", response_model=dict, tags=["locations"])
+@router.post("/location/create", response_model=dict, tags=["admin"])
 async def create_location(location_name: str, iso_code: str, continent_id: int, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user_role)):
     location = await location_controller.create_location(db, location_name, iso_code, continent_id)
     location_name = location.location_name
