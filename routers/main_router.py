@@ -1,22 +1,18 @@
-from typing import List, Union
-
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-from auth.database import get_db, User
+from config_db.database import get_db, User
+from auth.manager import get_sync_db
 from auth.schemas import UpdateUserData
-from config_db.database__ITEM import get_sync_db
+# from config_db.database__ITEM import
 
 
 from fastapi.responses import JSONResponse
 
 from controllers.main_controllers import CovidStatistics, LocationController, ContinentController
 
-from sqlalchemy.future import select
-
-from models.main_models import Covid_Statistics_update, Location, Location_post
-from routers.test_auth_router import current_user
+from models.main_models import Covid_Statistics_update
+from routers.auth_router import current_user
 
 covid_controller = CovidStatistics()
 location_controller = LocationController()
