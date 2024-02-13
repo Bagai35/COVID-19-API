@@ -33,7 +33,7 @@ Database Management System: MySQL
 1. git clone project
    $ git clone https://github.com/Bagai35/COVID-19-API.git
 2. Open project and write $pip install -r requirements.txt
-3. Import database file (/auth/covid.sql) in MySQL (You need to find php.ini and updade post_max_size and upload_max_filesize to 400m)
+3. Create database covid and import database file (/auth/covid.sql) in MySQL (You need to find php.ini and updade post_max_size and upload_max_filesize to 400m)
 4. After installing write $uvicorn main:app --reload 
 
 
