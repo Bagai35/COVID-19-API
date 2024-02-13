@@ -84,22 +84,22 @@ def update_user_data(
     return current_user
 
 
-@router.get("/stats/summry/location/{location_id}", response_model=dict, tags=["statistic"])
-def read_country_summary_stats(location_id: int, db: Session = Depends(get_sync_db)):
-    location = location_controller.get_location_by_id(db, location_id)
-
-    if location is None:
-        raise HTTPException(status_code=404, detail="Location not found")
-
-    stat = covid_controller.get_country_summary_stats(db, location)
-
-    total_cases, total_vaccinations, total_deaths = stat
-
-    return {
-        "total_cases": total_cases,
-        "total_vaccinations": total_vaccinations,
-        "total_deaths": total_deaths
-    }
+# @router.get("/stats/summry/location/{location_id}", response_model=dict, tags=["statistic"])
+# def read_country_summary_stats(continent_id: int, db: Session = Depends(get_sync_db)):
+#     continent = continent_controller.get_continent_by_id(db, continent_id)
+#
+#     if continent is None:
+#         raise HTTPException(status_code=404, detail="Location not found")
+#
+#     stat = covid_controller.get_continent_summary_stats(db, continent)
+#
+#     total_cases, total_vaccinations, total_deaths = stat
+#
+#     return {
+#         "total_cases": total_cases,
+#         "total_vaccinations": total_vaccinations,
+#         "total_deaths": total_deaths
+#     }
 
 @router.get("/continent/stats/{country_name}", response_model=dict, tags=["continents & locations"])
 def get_continent_stats(continent_name: str, db: Session = Depends(get_sync_db)):

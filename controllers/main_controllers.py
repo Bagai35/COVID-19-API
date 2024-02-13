@@ -39,14 +39,14 @@ class CovidStatistics:
                     # Добавьте другие поля, если они есть
                 }
 
-    def get_continent_summary_stats(self, db: Session, continent_id: int):
-        summary_stats = db.query(
-            func.sum(CovidStatistic.new_cases),
-            func.sum(CovidStatistic.new_vaccinations),
-            func.sum(CovidStatistic.new_deaths)
-        ).filter(CovidStatistic.location.has(Location.continent_id == continent_id)).first()
-
-        return summary_stats
+    # def get_continent_summary_stats(self, db: Session, continent_id: int):
+    #     summary_stats = db.query(
+    #         func.sum(CovidStatistic.new_cases),
+    #         func.sum(CovidStatistic.new_vaccinations),
+    #         func.sum(CovidStatistic.new_deaths)
+    #     ).filter(CovidStatistic.location.has(Location.continent_id == continent_id)).first()
+    #
+    #     return summary_stats
 
     async def delete_statistics(self, db: AsyncSession, CovidStatisticId: int):
         async with db as session:
@@ -76,6 +76,11 @@ class ContinentController:
     def get_continent_by_name(self, db: Session, continent_name: str):
         continent = db.query(Continent).filter(Continent.continent == continent_name).first()
         return continent.continent_id
+
+    def get_continent_by_id(self, db: Session, continent_id: int):
+        continent = db.query(Continent).filter(Continent.continent_id == continent_id).first()
+        return continent
+
     def get_locations_by_continent(self, db: Session, continent_id: int):
         return db.query(Location).filter(Location.continent_id == continent_id).all()
 
