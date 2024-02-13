@@ -2,8 +2,12 @@ from typing import Optional
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+import mysql.connector
 
-from auth.database import User, get_user_db
+from config_db.database import User, get_user_db
+
 
 SECRET = "SECRET"
 
@@ -45,3 +49,33 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
+
+
+
+
+
+# Конфигурация SQLAlchemy
+DATABASE_URL = "mysql+pymysql://root:@localhost/covid"
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+
+connection = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='',
+    database='covid'
+)
+
+cursor = connection.cursor()
+
+def get_sync_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+Base.metadata.create_all(bind=engine)
