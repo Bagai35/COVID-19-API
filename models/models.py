@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean, create_engine
+from sqlalchemy import MetaData, select, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean, create_engine
 
 
 DATABASE_URL = "mysql+pymysql://root:@localhost/covid"
@@ -8,6 +8,9 @@ DATABASE_URL = "mysql+pymysql://root:@localhost/covid"
 engine = create_engine(DATABASE_URL)
 
 metadata = MetaData()
+
+
+
 
 role = Table(
     "role",
@@ -46,5 +49,7 @@ continent = Table(
     Column("id", Integer, primary_key=True),
     Column("name", String(length=255), nullable=False),
 )
+
+
 
 metadata.create_all(engine)

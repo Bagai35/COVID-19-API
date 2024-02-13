@@ -140,3 +140,15 @@ async def create_location(location_name: str, iso_code: str, continent_id: int, 
     location_iso = location.iso_code
     location_continent = location.continent_id
     return {"Locataion: ": location_name, "Continent: ": location_continent, "ISO: ": location_iso}
+
+@router.delete("/location/delete/{location_id}", response_model=dict, tags=["admin"])
+async def delete_location(
+    location_id: int,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user_role)
+):
+    try:
+        result = await covid_controller.delete_statistics(db, location_id)
+        return result
+    except HTTPException as e:
+        return e

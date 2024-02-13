@@ -39,14 +39,14 @@ class CovidStatistics:
                     # Добавьте другие поля, если они есть
                 }
 
-    def get_country_summary_stats(self, db: Session, location_id: int):
-        country_summary_stats = db.query(
-            func.sum(CovidStatistic.total_cases),
-            func.sum(CovidStatistic.total_vaccinations),
-            func.sum(CovidStatistic.total_deaths)
-        ).filter(CovidStatistic.location_id == location_id).first()
-        return country_summary_stats
+    def get_continent_summary_stats(self, db: Session, continent_id: int):
+        summary_stats = db.query(
+            func.sum(CovidStatistic.new_cases),
+            func.sum(CovidStatistic.new_vaccinations),
+            func.sum(CovidStatistic.new_deaths)
+        ).filter(CovidStatistic.location.has(Location.continent_id == continent_id)).first()
 
+        return summary_stats
 
     async def delete_statistics(self, db: AsyncSession, CovidStatisticId: int):
         async with db as session:
@@ -105,21 +105,21 @@ class LocationController:
         await db.refresh(location)
         return location
 
+    async def delete_location(self, db: AsyncSession, location_id: int):
+        async with db as session:
+            # Попытка найти запись по id
+            location = await session.execute(
+                select(Location).filter(Location.location_id == location_id))
+            location = location.scalars().first()
+
+            # Если запись не найдена, вызываем исключение HTTP 404 Not Found
+            if not location:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Covid Statistic not found")
+
+            # Удаляем запись
+            await session.delete(location)
+            await session.commit()
+
+            return {"message": "Location deleted successfully"}
 
 
-class CovidStatisticController:
-
-    def get_country_summary_stats(self, db: Session, location_id: int):
-        country_summary_stats = db.query(
-            func.sum(CovidStatistic.total_cases),
-            func.sum(CovidStatistic.total_vaccinations),
-            func.sum(CovidStatistic.total_deaths)
-        ).filter(CovidStatistic.location_id == location_id).first()
-
-        total_cases, total_vaccinations, total_deaths = country_summary_stats
-
-        return {
-            "total_cases": total_cases,
-            "total_vaccinations": total_vaccinations,
-            "total_deaths": total_deaths
-        }
