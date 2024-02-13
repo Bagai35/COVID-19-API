@@ -27,11 +27,11 @@ Data Processing Library: Pandas
 Database Management System: MySQL
 
 
-#How to install and start project
+# How to install and start project
 1. git clone project
    $ git clone https://github.com/Bagai35/COVID-19-API.git
 2. Open project and write $pip install -r requirements.txt
-3. Import database file in MySQL
+3. Import database file in MySQL (You need to find php.ini and updade post_max_size and upload_max_filesize to 400mb)
 4. After installing write $uvicorn main:app --reload 
 
 
