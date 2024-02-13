@@ -24,3 +24,10 @@ Frameworks: FastAPI
 Database Library: SQLAlchemy, FastAPI Users, 
 Data Processing Library: Pandas
 Database Management System: MySQL
+
+
+#How to install and start project
+1. git clone project
+   $ git clone https://github.com/Bagai35/COVID-19-API.git
+2. Open project and write $pip install -r requirements.txt
+3. After installing write $uvicorn main:app --reload 
